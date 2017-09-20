@@ -40,18 +40,31 @@ var pie = d3.pie();
 
 var arc = d3.arc()
   .outerRadius(100)
-  .innerRadius(0)
+  .innerRadius(30)
+
+var arcLabel = d3.arc()
+  .outerRadius(200)
+  .innerRadius(10)
 
 var arcData = pie(pieData);
 
-svg.selectAll('path')
+console.log(arcLabel.centroid(arcData[0]))
+
+var arcDom = svg.selectAll('path')
   .data(arcData)
   .enter()
-  .append('path')
-  .attr('d', arc)
+  .append('g')
   .attr('transform', 'translate(200, 200)')
+
+arcDom.append('path')
+  .attr('d', arc)
   .attr('stroke', '#fff')
 
+arcDom.append('text')
+  .attr('transform', (d) => { return `translate(${arcLabel.centroid(d)})`})
+  .attr("dy", "0.35em")
+  .attr('fill', 'orange')
+  .text((d) => { return d.data })
 
 
 // d3.csv('Most-Recent-Cohorts-Scorecard-Elements.csv', (err, data) => {
