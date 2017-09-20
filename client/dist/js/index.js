@@ -1,1 +1,0 @@
-var margin={top:20,left:20,right:20,bottom:20},height=1e3,width=1e3,city="San Francisco";

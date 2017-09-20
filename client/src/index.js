@@ -1,4 +1,5 @@
 // var data = [100, 250, 175, 200, 120, 10];
+import * as d3 from 'd3';
 // console.log(d3.tsvParse(weatherData));
 var margin = {top: 20, left: 20, right: 20, bottom: 20};
 var height = 1000;

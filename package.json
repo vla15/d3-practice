@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/vla15/d3-practice#readme",
   "dependencies": {
+    "d3": "^4.10.2",
+    "d3-path": "^1.0.5",
+    "d3-shape": "^1.2.0",
     "express": "^4.15.4",
     "gulp": "^3.9.1",
     "gulp-uglify": "^3.0.0",
