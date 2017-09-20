@@ -1,10 +1,9 @@
 // var data = [100, 250, 175, 200, 120, 10];
+// console.log(d3.tsvParse(weatherData));
 var margin = {top: 20, left: 20, right: 20, bottom: 20};
 var height = 1000;
 var width = 1000;
 var city = 'San Francisco';
-
-console.log(d3.tsv);
 
 d3.tsv('data.tsv', (err, data) => {
   data.forEach(d => {
