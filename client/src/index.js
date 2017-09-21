@@ -104,12 +104,13 @@ d3.csv('Most-Recent-Cohorts-Scorecard-Elements.csv', (err, data) => {
     d['GRAD_DEBT_MDN10YR_SUPP'] = isNaN(d['GRAD_DEBT_MDN10YR_SUPP']) ? 0 : +d['GRAD_DEBT_MDN10YR_SUPP'];
   })
   var yMax = d3.max(data, d => d['GRAD_DEBT_MDN10YR_SUPP'])
+  console.log(yMax);
   var yScale = d3.scaleLinear()
-    .domain([0, yMax])
-    .range([height - margin.bottom, margin.top]);
+    .domain([0.0, yMax])
+    .range([height + 20, margin.top]);
   var xScale = d3.scaleLinear()
     .domain([0, data.length])
-    .range([margin.left, width - margin.right])
+    .range([margin.left + 20, width + margin.right])
 
   var yAxis = d3.axisLeft()
     .scale(yScale);
@@ -124,23 +125,14 @@ d3.csv('Most-Recent-Cohorts-Scorecard-Elements.csv', (err, data) => {
     .x((d, i) => { return xScale(i)})
 
   svg.append('g')
-    .attr('transform', `translate(${margin.left}, 0)`)
+    .attr('transform', `translate(${margin.left + 20}, 0)`)
     .call(yAxis);
   svg.append('g')
-    .attr('transform', `translate(${margin.left}, ${width - margin.top})`)
+    .attr('transform', `translate(0, ${width + margin.top})`)
     .call(xAxis);
 
   svg.append('path')
     .attr('d', line(data))
     .attr('fill', '#fff')
     .attr('stroke', 'black')  
-
-  // svg.selectAll('rect')
-  //   .data(data)
-  //   .enter()
-  //   .append('rect')
-  //   .attr('width', 2)
-  //   .attr('height', (d) => { return height - yScale(d['GRAD_DEBT_MDN10YR_SUPP']) })
-  //   .attr('y', (d) => { return yScale(d['GRAD_DEBT_MDN10YR_SUPP']) })
-  //   .attr('x', (d,i) => { return xScale(d['WOMENONLY']) })
-  });
+});
