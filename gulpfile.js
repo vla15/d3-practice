@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const uglify = require('gulp-uglify');
+const webpack = require('webpack-stream')
 
 //gulp.task 
 //gulp.src input
@@ -16,12 +17,21 @@ gulp.task('copyHtml', () => {
     .pipe(gulp.dest('client/dist'))
 })
 
-gulp.task('minify', () => {
-  gulp.src('client/src/*.js')
-    .pipe(uglify())
-    .pipe(gulp.dest('client/dist/js'))
-})
+// gulp.task('minify', () => {
+//   return gulp.src('client/src/*.js')
+//   .pipe(webpack(require('./webpack.config.js')))
+//   .pipe(uglify())
+//   .pipe(gulp.dest('client/src/dist'))
+// })
 
-gulp.task('default', () => {
-  console.log('yoooo');
-})
+
+
+
+//minify bundle.js file
+// gulp.task('scripts', () => {
+//   gulp.src('client/src/bundle.js')
+//   .pipe(uglify())
+//   .pipe(gulp.dest('client/dist'))
+// })
+
+// gulp.task('watch', [scripts])

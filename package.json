@@ -24,6 +24,8 @@
     "gulp": "^3.9.1",
     "gulp-uglify": "^3.0.0",
     "node": "^8.3.0",
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.12.1",
+    "uglifyjs-webpack-plugin": "^0.4.6",
+    "webpack-stream": "^4.0.0"
   }
 }
