@@ -35,63 +35,112 @@ var svg = d3.select('svg');
 
 
 var pieData = [1, 1, 2, 3, 5, 8, 13, 21];
+var colors = d3.scaleOrdinal(d3.schemeCategory20)
 
 var pie = d3.pie();
 
 var arc = d3.arc()
   .outerRadius(100)
-  .innerRadius(30)
+  .innerRadius(20)
+  .startAngle((d) => d.startAngle)
+  .endAngle((d) => d.endAngle)
 
-var arcLabel = d3.arc()
-  .outerRadius(200)
-  .innerRadius(10)
 
-var arcData = pie(pieData);
-
-console.log(arcLabel.centroid(arcData[0]))
-
-var arcDom = svg.selectAll('path')
-  .data(arcData)
-  .enter()
-  .append('g')
+var newSvg = svg.append('g')
   .attr('transform', 'translate(200, 200)')
 
-arcDom.append('path')
-  .attr('d', arc)
+
+newSvg.selectAll('path')
+  .data(pie(pieData))
+  .enter()
+  .append('path')
+  .attr('d', (d) => { return arc(d)})
   .attr('stroke', '#fff')
-
-arcDom.append('text')
-  .attr('transform', (d) => { return `translate(${arcLabel.centroid(d)})`})
-  .attr("dy", "0.35em")
-  .attr('fill', 'orange')
-  .text((d) => { return d.data })
+  .attr('fill', (d, i) => { return colors(d.value)})
 
 
-// d3.csv('Most-Recent-Cohorts-Scorecard-Elements.csv', (err, data) => {
-//   data.forEach(d => {
-//     d.institution = d.INSTNM;
-//     d['GRAD_DEBT_MDN10YR_SUPP'] = isNaN(d['GRAD_DEBT_MDN10YR_SUPP']) ? 0 : +d['GRAD_DEBT_MDN10YR_SUPP'];
-//   })
-//   var yMax = d3.max(data, d => d['GRAD_DEBT_MDN10YR_SUPP'])
-//   var yScale = d3.scaleLinear()
-//     .domain([0, yMax])
-//     .range([height - margin.bottom, margin.top]);
 
-//   var yAxis = d3.axisLeft()
-//     .scale(yScale);
+// newSvg.selectAll('path')
+//   .data(pie(pieData))
+//   .enter().append('path')
+//   .attr('d', (d) => { return arc(d)})
+//   .attr('stroke', '#fff')
 
-//   var svg = d3.select('svg')
+// var pie = d3.pie();
 
-//   svg.append('g')
-//     .attr('transform', `translate(${margin.left}, ${margin.top})`)
-//     .call(yAxis);
+// var arc = d3.arc()
+//   .outerRadius(100)
+//   .innerRadius(30)
 
-//   svg.selectAll('rect')
-//     .data(data)
-//     .enter()
-//     .append('rect')
-//     .attr('width', 2)
-//     .attr('height', (d) => { return height - yScale(d['GRAD_DEBT_MDN10YR_SUPP']) })
-//     .attr('y', (d) => { return yScale(d['GRAD_DEBT_MDN10YR_SUPP']) })
-//     .attr('x', (d,i) => { return i + margin.left })
-//   });
+// var arcLabel = d3.arc()
+//   .outerRadius(200)
+//   .innerRadius(10)
+
+// var arcData = pie(pieData);
+
+// console.log(arcLabel.centroid(arcData[0]))
+
+// var arcDom = svg.selectAll('path')
+//   .data(arcData)
+//   .enter()
+//   .append('g')
+//   .attr('transform', 'translate(200, 200)')
+
+// arcDom.append('path')
+//   .attr('d', arc)
+//   .attr('stroke', '#fff')
+
+// arcDom.append('text')
+//   .attr('transform', (d) => { return `translate(${arcLabel.centroid(d)})`})
+//   .attr("dy", "0.35em")
+//   .attr('fill', 'orange')
+//   .text((d) => { return d.data })
+
+
+d3.csv('Most-Recent-Cohorts-Scorecard-Elements.csv', (err, data) => {
+  data = data.slice(0, 100)
+  data.forEach(d => {
+    d.institution = d.INSTNM;
+    d['GRAD_DEBT_MDN10YR_SUPP'] = isNaN(d['GRAD_DEBT_MDN10YR_SUPP']) ? 0 : +d['GRAD_DEBT_MDN10YR_SUPP'];
+  })
+  var yMax = d3.max(data, d => d['GRAD_DEBT_MDN10YR_SUPP'])
+  var yScale = d3.scaleLinear()
+    .domain([0, yMax])
+    .range([height - margin.bottom, margin.top]);
+  var xScale = d3.scaleLinear()
+    .domain([0, data.length])
+    .range([margin.left, width - margin.right])
+
+  var yAxis = d3.axisLeft()
+    .scale(yScale);
+
+  var xAxis = d3.axisBottom()
+    .scale(xScale);
+
+  var svg = d3.select('svg')
+
+  var line = d3.line()
+    .y((d) => { return yScale(d['GRAD_DEBT_MDN10YR_SUPP'])})
+    .x((d, i) => { return xScale(i)})
+
+  svg.append('g')
+    .attr('transform', `translate(${margin.left}, 0)`)
+    .call(yAxis);
+  svg.append('g')
+    .attr('transform', `translate(${margin.left}, ${width - margin.top})`)
+    .call(xAxis);
+
+  svg.append('path')
+    .attr('d', line(data))
+    .attr('fill', '#fff')
+    .attr('stroke', 'black')  
+
+  // svg.selectAll('rect')
+  //   .data(data)
+  //   .enter()
+  //   .append('rect')
+  //   .attr('width', 2)
+  //   .attr('height', (d) => { return height - yScale(d['GRAD_DEBT_MDN10YR_SUPP']) })
+  //   .attr('y', (d) => { return yScale(d['GRAD_DEBT_MDN10YR_SUPP']) })
+  //   .attr('x', (d,i) => { return xScale(d['WOMENONLY']) })
+  });
