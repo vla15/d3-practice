@@ -26,6 +26,7 @@
     "node": "^8.3.0",
     "nodemon": "^1.12.1",
     "uglifyjs-webpack-plugin": "^0.4.6",
+    "webpack-obfuscator": "^0.11.2",
     "webpack-stream": "^4.0.0"
   }
 }
